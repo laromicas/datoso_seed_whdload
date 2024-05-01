@@ -33,7 +33,10 @@ def download_dats(folder_helper):
     def get_dat_links(name, url):
         # get mame dats
         print(f'Fetching {name} DAT files')
-        red = urllib.request.urlopen(url)
+        if not url.startswith(('http:', 'https:')):
+            msg = 'URL must start with "http:" or "https:"'
+            raise ValueError(msg)
+        red = urllib.request.urlopen(url) # noqa: S310
         pleasurehtml = red.read()
 
         parser = MyHTMLParser()
@@ -45,7 +48,10 @@ def download_dats(folder_helper):
 
     def download_dat(href):
         filename = Path(href).name.replace('%20', ' ')
-        tmp_filename, _ = urllib.request.urlretrieve(href)
+        if not href.startswith(('http:', 'https:')):
+            msg = 'URL must start with "http:" or "https:"'
+            raise ValueError(msg)
+        tmp_filename, _ = urllib.request.urlretrieve(href) # noqa: S310
         local_filename = folder_helper.dats / filename
         shutil.move(tmp_filename, local_filename)
 
@@ -73,8 +79,8 @@ def download_dats(folder_helper):
     with zipfile.ZipFile(folder_helper.backup / backup_daily_name, 'w') as zip_ref:
         for root, _, files in os.walk(folder_helper.dats):
             for file in files:
-                zip_ref.write(Path(root) / file, arcname=Path(root).relative_to(folder_helper.dats) / file, compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
-
+                zip_ref.write(Path(root) / file, arcname=Path(root).relative_to(folder_helper.dats) / file,
+                              compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
 
 
 def fetch():
