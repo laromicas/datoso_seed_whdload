@@ -9,15 +9,15 @@ actions = {
             '_class': WhdloadDat,
         },
         {
-            'action': 'DeleteOld'
+            'action': 'DeleteOld',
         },
         {
             'action': 'Copy',
-            'folder': '{dat_destination}'
+            'folder': '{dat_destination}',
         },
         {
-            'action': 'SaveToDatabase'
-        }
+            'action': 'SaveToDatabase',
+        },
     ],
 }
 
