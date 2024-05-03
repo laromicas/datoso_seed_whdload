@@ -8,16 +8,16 @@ actions = {
             'action': 'LoadDatFile',
             '_class': WhdloadDat,
         },
-        # {
-        #     'action': 'DeleteOld'
-        # },
-        # {
-        #     'action': 'Copy',
-        #     'folder': '{dat_destination}'
-        # },
-        # {
-        #     'action': 'SaveToDatabase'
-        # }
+        {
+            'action': 'DeleteOld'
+        },
+        {
+            'action': 'Copy',
+            'folder': '{dat_destination}'
+        },
+        {
+            'action': 'SaveToDatabase'
+        }
     ],
 }
 
