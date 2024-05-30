@@ -1,6 +1,6 @@
 import re
 
-from datoso.repositories.dat import ClrMameProDatFile
+from datoso.repositories.dat_file import ClrMameProDatFile
 
 
 class WhdloadDat(ClrMameProDatFile):
