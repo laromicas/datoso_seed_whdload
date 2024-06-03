@@ -1,9 +1,12 @@
+"""DAT files for WHDLoad."""
 import re
 
 from datoso.repositories.dat_file import ClrMameProDatFile
 
 
 class WhdloadDat(ClrMameProDatFile):
+    """WHDLoad DAT file."""
+
     seed: str = 'Whdload'
 
     def initial_parse(self) -> list:

@@ -1,3 +1,4 @@
+"""Actions for the whdload seed."""
 from datoso_seed_whdload.dats import WhdloadDat
 
 # ruff: noqa: ERA001
@@ -22,5 +23,6 @@ actions = {
     ],
 }
 
-def get_actions():
+def get_actions() -> dict:
+    """Get the actions dictionary."""
     return actions
