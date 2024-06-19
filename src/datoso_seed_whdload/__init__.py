@@ -1,4 +1,4 @@
-"""__init__.py"""
+"""Initialize seed variables."""
 __all__ = ['__version__', '__author__', '__description__']
 __version__ = '1.0a0.dev3'
 __author__ = 'Lacides Miranda'

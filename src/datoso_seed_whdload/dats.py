@@ -1,9 +1,13 @@
+"""WhdloadDat class to parse different types of dat files."""
+
 import re
 
-from datoso.repositories.dat import ClrMameProDatFile
+from datoso.repositories.dat_file import ClrMameProDatFile
 
 
 class WhdloadDat(ClrMameProDatFile):
+    """Whdload Dat class."""
+
     seed: str = 'Whdload'
 
     def initial_parse(self) -> list:

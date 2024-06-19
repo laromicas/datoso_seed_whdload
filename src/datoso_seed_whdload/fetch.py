@@ -1,3 +1,4 @@
+"""Fetch and download DAT files."""
 import os
 import shutil
 import urllib.request
@@ -17,10 +18,13 @@ NAME = 'WHDLoad'
 WHDLOAD_URL = 'http://armaxweb.free.fr/'
 
 class MyHTMLParser(HTMLParser):
+    """HTML parser to get the DAT files."""
+
     dats: list | None = None
     rootpath = None
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag: str, attrs: list) -> None:
+        """Handle the start tag of an HTML element, capture the zip hrefs."""
         if tag == 'a':
             taga = dict(attrs)
             if 'href' in taga:
@@ -29,9 +33,11 @@ class MyHTMLParser(HTMLParser):
                     self.dats.append(urljoin(self.rootpath, href).replace(' ', '%20'))
 
 
-def download_dats(folder_helper):
-    def get_dat_links(name, url):
-        # get mame dats
+def download_dats(folder_helper: Folders) -> None:
+    """Download DAT files."""
+
+    def get_dat_links(name: str, url: str) -> list:
+        """Get the DAT links."""
         print(f'Fetching {name} DAT files')
         if not url.startswith(('http:', 'https:')):
             msg = 'URL must start with "http:" or "https:"'
@@ -46,7 +52,7 @@ def download_dats(folder_helper):
         parser.feed(str(pleasurehtml))
         return parser.dats
 
-    def download_dat(href):
+    def download_dat(href: str) -> None:
         filename = Path(href).name.replace('%20', ' ')
         if not href.startswith(('http:', 'https:')):
             msg = 'URL must start with "http:" or "https:"'
@@ -83,7 +89,8 @@ def download_dats(folder_helper):
                               compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
 
 
-def fetch():
+def fetch() -> None:
+    """Fetch and download DAT files."""
     folder_helper = Folders(seed=__prefix__)
     folder_helper.clean_dats()
     folder_helper.create_all()
