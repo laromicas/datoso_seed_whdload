@@ -26,8 +26,8 @@ class WhdloadDat(ClrMameProDatFile):
             return self.date
         if self.version:
             result = re.findall(r'\(.*?\)', str(self.version))
-            self.date = result[len(result)-1][1:-1]
+            self.date = result[len(result)-1][1:-1].replace('_CM','')
         if self.file:
             result = re.findall(r'\(.*?\)', str(self.file))
-            self.date = result[len(result)-1][1:-1]
+            self.date = result[len(result)-1][1:-1].replace('_CM','')
         return self.date
