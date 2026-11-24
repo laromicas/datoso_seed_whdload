@@ -1,6 +1,5 @@
 """Fetch and download DAT files."""
 import os
-import shutil
 import urllib.request
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
@@ -12,6 +11,7 @@ from urllib.parse import urljoin
 from dateutil import tz
 
 from datoso.configuration.folder_helper import Folders
+from datoso.helpers.download import DownloadProgress, downloader
 from datoso_seed_whdload import __prefix__
 
 NAME = 'WHDLoad'
@@ -52,21 +52,17 @@ def download_dats(folder_helper: Folders) -> None:
         parser.feed(str(pleasurehtml))
         return parser.dats
 
-    def download_dat(href: str) -> None:
+    def download_dat(href: str, progress: DownloadProgress) -> None:
         filename = Path(href).name.replace('%20', ' ')
-        if not href.startswith(('http:', 'https:')):
-            msg = 'URL must start with "http:" or "https:"'
-            raise ValueError(msg)
-        tmp_filename, _ = urllib.request.urlretrieve(href) # noqa: S310
-        local_filename = folder_helper.dats / filename
-        shutil.move(tmp_filename, local_filename)
+        downloader(url=href, destination=folder_helper.dats / filename, downloader='urllib', progress=progress)
 
     links = get_dat_links(NAME, WHDLOAD_URL)
 
     print(f'Downloading {NAME} DAT files')
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with DownloadProgress(total=len(links), description=f'{len(links)} DAT file(s)') as progress, \
+            ThreadPoolExecutor(max_workers=10) as executor:
         futures = [
-            executor.submit(download_dat, href) for href in links
+            executor.submit(download_dat, href, progress) for href in links
         ]
         for future in futures:
             future.result()
